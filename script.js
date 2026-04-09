@@ -128,15 +128,60 @@ function performSearch() {
 
 function showAllProducts() {
     displaySearchResults(products, "All Products");
+    // Update hero title to show we're displaying all products
+    const heroTitle = document.querySelector('.hero h2');
+    if (heroTitle) {
+        heroTitle.textContent = 'All Products';
+    }
 }
 
 function displaySearchResults(results, query) {
-    const container = document.querySelector('.products');
+    // Check if we're on a page that has a products or category container
+    let container = document.querySelector('.products');
     const sectionTitle = document.querySelector('.section-title');
+    const heroTitle = document.querySelector('.hero h2');
+    const mainSection = document.querySelector('section.container');
     
-    if (!container || !sectionTitle) return;
+    // If no products container, check for category container (homepage)
+    if (!container) {
+        container = document.querySelector('.category');
+    }
     
-    sectionTitle.textContent = `Found ${results.length} result${results.length !== 1 ? 's' : ''} for "${query}"`;
+    // If still no container, create one on the current page
+    if (!container && mainSection) {
+        // Clear existing content and create products container
+        mainSection.innerHTML = `
+            <h2 class="section-title">Found ${results.length} result${results.length !== 1 ? 's' : ''} for "${query}"</h2>
+            <div class="products"></div>
+        `;
+        container = document.querySelector('.products');
+    }
+    
+    // Update section title
+    const updatedSectionTitle = document.querySelector('.section-title');
+    if (updatedSectionTitle) {
+        updatedSectionTitle.textContent = `Found ${results.length} result${results.length !== 1 ? 's' : ''} for "${query}"`;
+    }
+    
+    // Update hero title
+    if (heroTitle) {
+        heroTitle.textContent = 'Search Results';
+    }
+    
+    // Get the container (products or category)
+    if (!container) {
+        showNotification('Please navigate to a product page to search');
+        return;
+    }
+    
+    // Change category div to products div for consistent styling
+    if (container.classList.contains('category')) {
+        container.classList.remove('category');
+        container.classList.add('products');
+        container.style.display = 'grid';
+        container.style.gridTemplateColumns = 'repeat(auto-fit, minmax(250px, 1fr))';
+        container.style.gap = '20px';
+    }
     
     if (results.length === 0) {
         container.innerHTML = `
@@ -234,17 +279,52 @@ function saveCart() {
 }
 
 function showCart() {
-    const container = document.querySelector('.products');
+    // Check if we're on a page that can display cart
+    let container = document.querySelector('.products');
     const sectionTitle = document.querySelector('.section-title');
     const heroTitle = document.querySelector('.hero h2');
+    const mainSection = document.querySelector('section.container');
     
-    if (!container || !sectionTitle) return;
+    // If no products container, check for category container (homepage)
+    if (!container) {
+        container = document.querySelector('.category');
+    }
     
+    // If still no container, create one on the current page
+    if (!container && mainSection) {
+        // Clear existing content and create products container
+        mainSection.innerHTML = `
+            <h2 class="section-title">Your Shopping Cart</h2>
+            <div class="products"></div>
+        `;
+        container = document.querySelector('.products');
+    }
+    
+    // Update hero title
     if (heroTitle) {
         heroTitle.textContent = 'Shopping Cart';
     }
     
-    sectionTitle.textContent = 'Your Shopping Cart';
+    // Update section title
+    const updatedSectionTitle = document.querySelector('.section-title');
+    if (updatedSectionTitle) {
+        updatedSectionTitle.textContent = 'Your Shopping Cart';
+    }
+    
+    // Get the container (products or category)
+    if (!container) {
+        showNotification('Please navigate to a product page to view cart');
+        return;
+    }
+    
+    // Change category div to products div for consistent styling
+    if (container.classList.contains('category')) {
+        container.classList.remove('category');
+        container.classList.add('products');
+        container.style.display = 'grid';
+        container.style.gridTemplateColumns = 'repeat(auto-fit, minmax(250px, 1fr))';
+        container.style.gap = '20px';
+    }
     
     if (cart.length === 0) {
         container.innerHTML = `
