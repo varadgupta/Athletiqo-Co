@@ -161,10 +161,90 @@ footer{
     color:white;
 }
 
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo-section {
+    text-align: left;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* ===== Search Bar ===== */
+.search-container {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    padding: 5px;
+    backdrop-filter: blur(10px);
+}
+
+#search-bar {
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    font-size: 14px;
+    width: 250px;
+    outline: none;
+}
+
+#search-bar::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+#search-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#search-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+/* ===== Cart Button ===== */
+.cart-button {
+    background: linear-gradient(135deg, #ff5722, #ff9800);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.cart-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 87, 34, 0.3);
+    text-decoration: none;
+    color: white;
+}
+
 .tagline{
     color:#ff5722;
     font-size:14px;
-    letter-spacing:1px;
 }
 
 /* ===== Category Hero ===== */
