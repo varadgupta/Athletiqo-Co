@@ -1,0 +1,213 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f5f5f5;
+    line-height:1.6;
+}
+
+header{
+    background:#111;
+    color:#fff;
+    padding:20px;
+    text-align:center;
+}
+
+header h1{
+    font-size:32px;
+}
+
+nav{
+    background:#222;
+    text-align:center;
+    padding:10px;
+}
+
+nav a{
+    color:#fff;
+    text-decoration:none;
+    margin:0 15px;
+    font-size:16px;
+    transition:0.3s;
+}
+
+nav a:hover{
+    color:#ff5722;
+}
+
+.hero{
+    position: relative;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    background: url('https://images.unsplash.com/photo-1521412644187-c49fa049e84d') no-repeat center center/cover;
+}
+
+.hero::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+}
+
+.hero h2{
+    position: relative;
+    z-index: 2;
+    font-size: 40px;
+}
+
+.hero h2{
+    background:rgba(0,0,0,0.6);
+    padding:15px 30px;
+    font-size:36px;
+    border-radius:5px;
+}
+
+.container{
+    width:90%;
+    margin:auto;
+    padding:40px 0;
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:30px;
+    font-size:28px;
+    color:#333;
+}
+
+.products{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:#fff;
+    padding:20px;
+    border-radius:8px;
+    box-shadow:0 4px 8px rgba(0,0,0,0.1);
+    transition:0.3s;
+    text-align:center;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card img{
+    width:100%;
+    height:200px;
+    object-fit:contain;
+    border-radius:5px;
+}
+
+.card h3{
+    margin:15px 0 10px;
+}
+
+.price{
+    color:#ff5722;
+    font-weight:bold;
+    margin:10px 0;
+}
+
+button{
+    padding:10px 15px;
+    border:none;
+    background:#111;
+    color:#fff;
+    cursor:pointer;
+    border-radius:5px;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#ff5722;
+}
+
+footer{
+    background:#111;
+    color:#aaa;
+    text-align:center;
+    padding:10px;
+    font-size:14px;
+}
+
+.category{
+    display:flex;
+    gap:20px;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+.category .card{
+    width:350px;
+    cursor:pointer;
+}
+
+/* ===== Improved Header ===== */
+.main-header{
+    background: linear-gradient(135deg, #111, #222);
+    padding:25px;
+    text-align:center;
+    color:white;
+}
+
+.tagline{
+    color:#ff5722;
+    font-size:14px;
+    letter-spacing:1px;
+}
+
+/* ===== Category Hero ===== */
+.category-hero{
+    background: linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+    url('https://images.unsplash.com/photo-1517649763962-0c623066013b') center/cover no-repeat;
+    height:300px;
+}
+
+/* ===== Stylish Product Cards ===== */
+.card{
+    background:#fff;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.card:hover{
+    transform: translateY(-8px);
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+
+.card h3{
+    font-size:18px;
+    font-weight:600;
+}
+
+.price{
+    font-size:18px;
+}
+
+/* Stylish Button */
+button{
+    padding:10px 18px;
+    border:none;
+    background: linear-gradient(135deg,#111,#444);
+    color:#fff;
+    cursor:pointer;
+    border-radius:25px;
+    transition:0.3s;
+}
+
+button:hover{
+    background:linear-gradient(135deg,#ff5722,#ff9800);
+}
