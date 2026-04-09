@@ -3,6 +3,7 @@
 <head>
 <title>Athletiqo Co.</title>
 <link rel="stylesheet" href="style.css">
+<script src="script.js"></script>
 </head>
 <body>
 
@@ -15,38 +16,20 @@
         <div class="header-actions">
             <div class="search-container">
                 <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                    <input type="text" placeholder="Search products..." style="background: transparent; border: none; color: white; padding: 12px 15px; font-size: 14px; width: 150px; outline: none; font-weight: 500; letter-spacing: 0.5px;">
-                    <a href="search-basketball.html" style="text-decoration: none;">
-                        <button style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Basketball</button>
-                    </a>
-                    <a href="search-shoes.html" style="text-decoration: none;">
-                        <button style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Shoes</button>
-                    </a>
-                    <a href="search-cricket.html" style="text-decoration: none;">
-                        <button style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Cricket</button>
-                    </a>
-                    <a href="search-gym.html" style="text-decoration: none;">
-                        <button style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Gym</button>
-                    </a>
-                    <a href="search-tshirt.html" style="text-decoration: none;">
-                        <button style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">T-Shirt</button>
-                    </a>
-                    <a href="search-tracktop.html" style="text-decoration: none;">
-                        <button style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Tracktop</button>
-                    </a>
-                    <a href="search-trackpant.html" style="text-decoration: none;">
-                        <button style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Trackpant</button>
-                    </a>
-                    <a href="search-handgrip.html" style="text-decoration: none;">
-                        <button style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Hand Grip</button>
-                    </a>
-                    <form action="search.html" method="get" style="display: inline;">
-                        <button type="submit" style="background: linear-gradient(135deg, #ff5722, #ff9800); border: none; color: white; padding: 8px 12px; border-radius: 20px; cursor: pointer; font-size: 14px; margin: 2px; box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);">🔍</button>
-                    </form>
+                    <input type="text" id="search-input" placeholder="Search products..." style="background: transparent; border: none; color: white; padding: 12px 15px; font-size: 14px; width: 150px; outline: none; font-weight: 500; letter-spacing: 0.5px;">
+                    <button onclick="searchCategory('basketball')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Basketball</button>
+                    <button onclick="searchCategory('shoes')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Shoes</button>
+                    <button onclick="searchCategory('cricket')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Cricket</button>
+                    <button onclick="searchCategory('gym')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Gym</button>
+                    <button onclick="searchCategory('tshirt')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">T-Shirt</button>
+                    <button onclick="searchCategory('tracktop')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Tracktop</button>
+                    <button onclick="searchCategory('trackpant')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Trackpant</button>
+                    <button onclick="searchCategory('handgrip')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Hand Grip</button>
+                    <button id="search-button" onclick="performSearch()" style="background: linear-gradient(135deg, #ff5722, #ff9800); border: none; color: white; padding: 8px 12px; border-radius: 20px; cursor: pointer; font-size: 14px; margin: 2px; box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);">🔍</button>
                 </div>
             </div>
-            <a href="cart.html" class="cart-button">
-                🛒 Cart
+            <a href="#" class="cart-button" onclick="showCart(); return false;">
+                Cart (0)
             </a>
         </div>
     </div>
