@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>reCAPTCHA Test - Athletiqo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .recaptcha-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #g-recaptcha-response {
+            width: 100%;
+            height: 100px;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: monospace;
+            background: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Google reCAPTCHA Test</h1>
+        
+        <div class="info">
+            <strong>Testing Google reCAPTCHA v2 with image-selection challenges</strong><br>
+            This test will verify if the reCAPTCHA can load and show image challenges like:
+            traffic lights, buses, bicycles, crosswalks, etc.
+        </div>
+
+        <div class="recaptcha-container">
+            <div id="recaptcha-status" class="status info">Loading reCAPTCHA...</div>
+            <div id="recaptcha-widget"></div>
+        </div>
+
+        <div style="text-align: center; margin: 20px 0;">
+            <button onclick="verifyRecaptcha()">Verify reCAPTCHA</button>
+            <button onclick="resetRecaptcha()">Reset reCAPTCHA</button>
+        </div>
+
+        <div id="response-container" style="display: none;">
+            <label for="g-recaptcha-response">reCAPTCHA Response Token:</label>
+            <textarea id="g-recaptcha-response" readonly placeholder="Response token will appear here..."></textarea>
+        </div>
+
+        <div id="test-results"></div>
+
+        <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 5px;">
+            <h3>📋 Test Instructions:</h3>
+            <ol>
+                <li>Wait for reCAPTCHA to load (should show "I'm not a robot" checkbox)</li>
+                <li>Click the checkbox to start the challenge</li>
+                <li>Complete the image selection challenge (traffic lights, buses, etc.)</li>
+                <li>Click "Verify reCAPTCHA" to check the response token</li>
+                <li>If successful, the token should appear in the text area</li>
+            </ol>
+            
+            <h3>🔍 Expected Behavior:</h3>
+            <ul>
+                <li>✅ Checkbox appears and is clickable</li>
+                <li>✅ Image challenges load with clear instructions</li>
+                <li>✅ User can select images (traffic lights, buses, bicycles, crosswalks)</li>
+                <li>✅ Green checkmark appears after successful verification</li>
+                <li>✅ Response token is generated and can be retrieved</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Google reCAPTCHA Script -->
+    <script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoadCallback&render=explicit&hl=en" async defer></script>
+    
+    <script>
+        let recaptchaWidgetId = null;
+        const RECAPTCHA_SITE_KEY = '6Lfk7dAsAAAAAFm1VH8bxOm4Qp7tm0Wo1oI3cz1m'; // Production key
+        
+        // Global callback for reCAPTCHA load
+        function onRecaptchaLoadCallback() {
+            console.log('reCAPTCHA script loaded successfully');
+            renderRecaptcha();
+        }
+        
+        // Render reCAPTCHA widget
+        function renderRecaptcha() {
+            try {
+                const statusDiv = document.getElementById('recaptcha-status');
+                statusDiv.textContent = 'Rendering reCAPTCHA widget...';
+                statusDiv.className = 'status info';
+                
+                recaptchaWidgetId = grecaptcha.render('recaptcha-widget', {
+                    'sitekey': RECAPTCHA_SITE_KEY,
+                    'theme': 'light',
+                    'size': 'normal',
+                    'type': 'image',
+                    'callback': onRecaptchaSuccess,
+                    'expired-callback': onRecaptchaExpired,
+                    'error-callback': onRecaptchaError
+                });
+                
+                statusDiv.textContent = 'reCAPTCHA loaded successfully! Click the checkbox to start the challenge.';
+                statusDiv.className = 'status success';
+                
+            } catch (error) {
+                console.error('reCAPTCHA render error:', error);
+                onRecaptchaError();
+            }
+        }
+        
+        // reCAPTCHA success callback
+        function onRecaptchaSuccess(token) {
+            console.log('reCAPTCHA verification successful');
+            const statusDiv = document.getElementById('recaptcha-status');
+            statusDiv.textContent = '✅ reCAPTCHA verification successful! Token received.';
+            statusDiv.className = 'status success';
+            
+            // Show response token
+            document.getElementById('g-recaptcha-response').value = token;
+            document.getElementById('response-container').style.display = 'block';
+            
+            // Add test results
+            const resultsDiv = document.getElementById('test-results');
+            resultsDiv.innerHTML = `
+                <div class="status success">
+                    <strong>🎉 Test Successful!</strong><br>
+                    reCAPTCHA is working properly with image-selection challenges.<br>
+                    Token length: ${token.length} characters<br>
+                    Token starts with: ${token.substring(0, 20)}...
+                </div>
+            `;
+        }
+        
+        // reCAPTCHA expired callback
+        function onRecaptchaExpired() {
+            console.log('reCAPTCHA expired');
+            const statusDiv = document.getElementById('recaptcha-status');
+            statusDiv.textContent = '⏰ reCAPTCHA expired. Please try again.';
+            statusDiv.className = 'status error';
+            
+            document.getElementById('response-container').style.display = 'none';
+        }
+        
+        // reCAPTCHA error callback
+        function onRecaptchaError() {
+            console.error('reCAPTCHA error occurred');
+            const statusDiv = document.getElementById('recaptcha-status');
+            statusDiv.innerHTML = `
+                <strong>❌ reCAPTCHA Error</strong><br>
+                The reCAPTCHA failed to load. This could be due to:<br>
+                • Network issues<br>
+                • Invalid site key<br>
+                • Domain not registered<br>
+                <br>
+                <strong>Solution:</strong> Get proper reCAPTCHA keys from 
+                <a href="https://www.google.com/recaptcha/admin/create" target="_blank">Google reCAPTCHA Admin</a>
+            `;
+            statusDiv.className = 'status error';
+        }
+        
+        // Verify reCAPTCHA
+        function verifyRecaptcha() {
+            if (recaptchaWidgetId !== null) {
+                const response = grecaptcha.getResponse(recaptchaWidgetId);
+                if (response) {
+                    document.getElementById('g-recaptcha-response').value = response;
+                    document.getElementById('response-container').style.display = 'block';
+                    
+                    const resultsDiv = document.getElementById('test-results');
+                    resultsDiv.innerHTML = `
+                        <div class="status success">
+                            <strong>✅ Token Retrieved Successfully!</strong><br>
+                            Length: ${response.length} characters<br>
+                            Preview: ${response.substring(0, 50)}...
+                        </div>
+                    `;
+                } else {
+                    const resultsDiv = document.getElementById('test-results');
+                    resultsDiv.innerHTML = `
+                        <div class="status error">
+                            <strong>❌ No Token Found</strong><br>
+                            Please complete the reCAPTCHA challenge first.
+                        </div>
+                    `;
+                }
+            } else {
+                const resultsDiv = document.getElementById('test-results');
+                resultsDiv.innerHTML = `
+                    <div class="status error">
+                        <strong>❌ reCAPTCHA Not Ready</strong><br>
+                        Please wait for reCAPTCHA to load.
+                    </div>
+                `;
+            }
+        }
+        
+        // Reset reCAPTCHA
+        function resetRecaptcha() {
+            if (recaptchaWidgetId !== null) {
+                grecaptcha.reset(recaptchaWidgetId);
+                document.getElementById('response-container').style.display = 'none';
+                document.getElementById('test-results').innerHTML = '';
+                
+                const statusDiv = document.getElementById('recaptcha-status');
+                statusDiv.textContent = 'reCAPTCHA reset. Complete the challenge again.';
+                statusDiv.className = 'status info';
+            }
+        }
+        
+        // Auto-render after page load
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                if (typeof grecaptcha !== 'undefined') {
+                    renderRecaptcha();
+                } else {
+                    const statusDiv = document.getElementById('recaptcha-status');
+                    statusDiv.innerHTML = `
+                        <strong>⏳ Waiting for reCAPTCHA...</strong><br>
+                        If this takes too long, check your internet connection.
+                    `;
+                    statusDiv.className = 'status info';
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

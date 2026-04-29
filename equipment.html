@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z15QG6XST2"></script>
@@ -10,13 +10,18 @@
 
   gtag('config', 'G-Z15QG6XST2');
 </script>
-<title>Sports Wear - Athletiqo</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sports Equipment - Athletiqo Co.</title>
 <link rel="stylesheet" href="style.css">
 <script src="script.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<header class="main-header">
+<header>
     <div class="header-content">
         <div class="logo-section">
             <h1>Athletiqo Co.</h1>
@@ -24,99 +29,138 @@
         </div>
         <div class="header-actions">
             <div class="search-container">
-                <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                    <input type="text" id="search-input" placeholder="Search products..." style="background: transparent; border: none; color: white; padding: 12px 15px; font-size: 14px; width: 150px; outline: none; font-weight: 500; letter-spacing: 0.5px;">
-                    <button onclick="searchCategory('basketball')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Basketball</button>
-                    <button onclick="searchCategory('cricket')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Cricket</button>
-                    <button onclick="searchCategory('gym')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Gym</button>
-                    <button id="search-button" onclick="performSearch()" style="background: linear-gradient(135deg, #ff5722, #ff9800); border: none; color: white; padding: 8px 12px; border-radius: 20px; cursor: pointer; font-size: 14px; margin: 2px; box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);">🔍</button>
+                <div class="category-pills">
+                    <input type="text" id="search-input" placeholder="Search products...">
+                    <button class="category-pill" onclick="searchCategory('basketball')">Basketball</button>
+                    <button class="category-pill" onclick="searchCategory('cricket')">Cricket</button>
+                    <button class="category-pill" onclick="searchCategory('gym')">Gym</button>
+                    <button class="category-pill" onclick="searchCategory('handgrip')">Hand Grip</button>
+                    <button id="search-button" onclick="performSearch()">🔍</button>
                 </div>
             </div>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+            </button>
             <a href="#" class="cart-button" onclick="showCart(); return false;">
-                Cart (0)
+                🛒 Cart (0)
             </a>
         </div>
     </div>
 </header>
 
-<section class="hero category-hero">
-    <h2>Sports Equipment Collection</h2>
-</section>
-
 <nav>
-    <a href="index.html">Home</a>
-    <a href="wear.html">Sports Wear</a>
-    <a href="equipment.html">Sports Equipment</a>
+    <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <div class="nav-container">
+        <a href="index.html">Home</a>
+        <a href="wear.html">Sports Wear</a>
+        <a href="equipment.html" class="active">Sports Equipment</a>
+    </div>
 </nav>
 
+<section class="hero category-hero">
+    <div class="hero-content">
+        <h2>Sports Equipment Collection</h2>
+        <p>Professional-grade equipment for athletes who demand excellence</p>
+    </div>
+</section>
+
 <section class="container">
-    <h2 class="section-title">Sports Wear Collection</h2>
+    <h2 class="section-title">Professional Sports Equipment</h2>
     <div class="products">
 
         <div class="card">
-            <img src="https://m.media-amazon.com/images/I/61eYoqYP2TL._AC_UL480_FMwebp_QL65_.jpg">
-            <h3>Boldfit Adjustable Hand Grip</h3>
-            <div class="price">₹299</div>
-
-            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 15px;">
-                <a href="cart-handgrip.html" style="text-decoration: none;">
-                    <button style="background: linear-gradient(135deg, #4CAF50, #45a049);">Add to Cart</button>
-                </a>
-                <a href="https://amzn.in/d/04hoirIg" target="_blank">
-                    <button>Buy Now</button>
-                </a>
+            <img src="https://m.media-amazon.com/images/I/61eYoqYP2TL._AC_UL480_FMwebp_QL65_.jpg" alt="Hand Grip">
+            <div class="card-content">
+                <h3>Boldfit Adjustable Hand Grip</h3>
+                <p>Perfect for building grip strength and forearm muscles. Adjustable resistance for all fitness levels.</p>
+                <div class="price">299</div>
+                <div class="card-actions">
+                    <button class="btn btn-success" onclick="addToCart(5)">Add to Cart</button>
+                    <a href="https://amzn.in/d/04hoirIg" target="_blank" class="btn btn-secondary">Buy Now</a>
+                </div>
             </div>
-
         </div>
 
         <div class="card">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1voFYoBEsu09Wk_ZzJ0Vjfwp8TajnE3snCg&s">
-            <h3>Basketball BT900 - Size 7</h3>
-            <div class="price">₹1,999</div>
-
-            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 15px;">
-                <a href="cart-basketball.html" style="text-decoration: none;">
-                    <button style="background: linear-gradient(135deg, #4CAF50, #45a049);">Add to Cart</button>
-                </a>
-                <a href="https://www.decathlon.in/p/8648080/basketball-bt900-size-7fiba-approved-for-boys-and-adults" target="_blank">
-                    <button>Buy Now</button>
-                </a>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1voFYoBEsu09Wk_ZzJ0Vjfwp8TajnE3snCg&s" alt="Basketball">
+            <div class="card-content">
+                <h3>Basketball BT900 - Size 7</h3>
+                <p>Professional FIBA-approved basketball with superior grip and durability for competitive play.</p>
+                <div class="price">1,999</div>
+                <div class="card-actions">
+                    <button class="btn btn-success" onclick="addToCart(1)">Add to Cart</button>
+                    <a href="https://www.decathlon.in/p/8648080/basketball-bt900-size-7fiba-approved-for-boys-and-adults" target="_blank" class="btn btn-secondary">Buy Now</a>
+                </div>
             </div>
-
         </div>
 
         <div class="card">
-            <img src="https://www.sstoncricket.com/wp-content/uploads/2023/04/56A51367-scaled-370x493.jpg">
-            <h3>SS Ikon Kashmir Willow Cricket Bat</h3>
-            <div class="price">₹2,654</div>
-
-            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 15px;">
-                <a href="cart-cricketbat.html" style="text-decoration: none;">
-                    <button style="background: linear-gradient(135deg, #4CAF50, #45a049);">Add to Cart</button>
-                </a>
-                <a href="https://www.sstoncricket.com/ss-ikon-kashmir-willow-cricket-bat-sh.html" target="_blank">
-                    <button>Buy Now</button>
-                </a>
+            <img src="https://www.sstoncricket.com/wp-content/uploads/2023/04/56A51367-scaled-370x493.jpg" alt="Cricket Bat">
+            <div class="card-content">
+                <h3>SS Ikon Kashmir Willow Cricket Bat</h3>
+                <p>Premium Kashmir willow bat with traditional craftsmanship for superior performance on the pitch.</p>
+                <div class="price">2,654</div>
+                <div class="card-actions">
+                    <button class="btn btn-success" onclick="addToCart(3)">Add to Cart</button>
+                    <a href="https://www.sstoncricket.com/ss-ikon-kashmir-willow-cricket-bat-sh.html" target="_blank" class="btn btn-secondary">Buy Now</a>
+                </div>
             </div>
-
         </div>
 
         <div class="card">
-            <img src="https://contents.mediadecathlon.com/p2300404/5f3428e7ca71a6b8d65702dd8bffdcdc/p2300404.jpg">
-            <h3>Gym Weight Training Station Full Body Workout at Home</h3>
-            <div class="price">₹35,999</div>
-
-            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 15px;">
-                <a href="cart-gymstation.html" style="text-decoration: none;">
-                    <button style="background: linear-gradient(135deg, #4CAF50, #45a049);">Add to Cart</button>
-                </a>
-                <a href="https://www.decathlon.in/p/8484134/gym-weight-training-station-full-body-workout-at-home-home-gym-900-black" target="_blank">
-                    <button>Buy Now</button>
-                </a>
+            <img src="https://contents.mediadecathlon.com/p2300404/5f3428e7ca71a6b8d65702dd8bffdcdc/p2300404.jpg" alt="Gym Station">
+            <div class="card-content">
+                <h3>Gym Weight Training Station</h3>
+                <p>Complete full-body workout station for home training. Professional-grade construction for serious athletes.</p>
+                <div class="price">35,999</div>
+                <div class="card-actions">
+                    <button class="btn btn-success" onclick="addToCart(4)">Add to Cart</button>
+                    <a href="https://www.decathlon.in/p/8484134/gym-weight-training-station-full-body-workout-at-home-home-gym-900-black" target="_blank" class="btn btn-secondary">Buy Now</a>
+                </div>
             </div>
-
         </div>
 
+    </div>
+</section>
+
+<section class="container" style="background: var(--bg-secondary); border-radius: 20px; padding: 3rem; margin-bottom: 3rem;">
+    <h2 class="section-title">Equipment Features</h2>
+    <div class="products">
+        <div class="card">
+            <div class="card-content" style="text-align: center;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🏆</div>
+                <h3>Professional Grade</h3>
+                <p>Equipment used by professional athletes and approved by sports federations worldwide.</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content" style="text-align: center;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🛡️</div>
+                <h3>Durability Guaranteed</h3>
+                <p>Built with premium materials to withstand intense training and competitive use.</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content" style="text-align: center;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">⚙️</div>
+                <h3>Advanced Engineering</h3>
+                <p>Cutting-edge design and technology for enhanced performance and injury prevention.</p>
+            </div>
+        </div>
     </div>
 </section>
 

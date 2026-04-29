@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z15QG6XST2"></script>
@@ -10,9 +10,14 @@
 
   gtag('config', 'G-Z15QG6XST2');
 </script>
-<title>Athletiqo Co.</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Athletiqo Co. - Premium Sports Wear & Equipment</title>
 <link rel="stylesheet" href="style.css">
 <script src="script.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -20,78 +25,178 @@
     <div class="header-content">
         <div class="logo-section">
             <h1>Athletiqo Co.</h1>
-            <h3>Premium Sports Wear & Equipments</h3>
+            <p class="tagline">Premium Sports Wear & Equipment</p>
         </div>
         <div class="header-actions">
             <div class="search-container">
-                <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                    <input type="text" id="search-input" placeholder="Search products..." style="background: transparent; border: none; color: white; padding: 12px 15px; font-size: 14px; width: 150px; outline: none; font-weight: 500; letter-spacing: 0.5px;">
-                    <button onclick="searchCategory('basketball')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Basketball</button>
-                    <button onclick="searchCategory('shoes')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Shoes</button>
-                    <button onclick="searchCategory('cricket')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Cricket</button>
-                    <button onclick="searchCategory('gym')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Gym</button>
-                    <button onclick="searchCategory('tshirt')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">T-Shirt</button>
-                    <button onclick="searchCategory('tracktop')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Tracktop</button>
-                    <button onclick="searchCategory('trackpant')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Trackpant</button>
-                    <button onclick="searchCategory('handgrip')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Hand Grip</button>
-                    <button id="search-button" onclick="performSearch()" style="background: linear-gradient(135deg, #ff5722, #ff9800); border: none; color: white; padding: 8px 12px; border-radius: 20px; cursor: pointer; font-size: 14px; margin: 2px; box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);">🔍</button>
-                </div>
+                <input type="text" id="search-input" placeholder="Search products...">
+                <button id="search-button">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </button>
             </div>
-            <a href="#" class="cart-button" onclick="showCart(); return false;">
+            <div class="auth-buttons">
+                <a href="login.html" class="btn btn-outline">Login</a>
+                <a href="signup.html" class="btn btn-primary">Sign Up</a>
+            </div>
+            <a href="cart.html" class="cart-button">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 2L6 9H3L5 21H19L21 9H18L15 2H9Z"/>
+                    <path d="M9 2L6 9"/>
+                </svg>
                 Cart (0)
             </a>
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+            </button>
         </div>
     </div>
 </header>
 
 <nav>
-    <a href="index.html">Home</a>
-    <a href="wear.html">Sports Wear</a>
-    <a href="equipment.html">Sports Equipment</a>
+    <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <div class="nav-container">
+        <a href="index.html" class="active">Home</a>
+        <a href="wear.html">Sports Wear</a>
+        <a href="equipment.html">Sports Equipment</a>
+        <a href="#featured">Featured</a>
+        <a href="#categories">Categories</a>
+        <a href="#testimonials">Testimonials</a>
+    </div>
 </nav>
 
 <section class="hero">
-    <h2>Gear Up. Play Hard.</h2>
+    <div class="hero-content">
+        <h2>Welcome to Athletiqo Co.</h2>
+        <p>Your premium destination for sports wear and equipment</p>
+    </div>
 </section>
 
-<section class="container">
-    <h2 class="section-title">Choose Your Category</h2>
-    <div class="category">
-    <p style="text-align:center; font-size:14px; color:#777; margin-bottom:20px;">
-    India’s trusted online sports store for sports wear online India, sports equipment online India and premium fitness apparel online.
-    </p>
-
-        <!-- SPORTS WEAR CARD -->
-        <div class="card">
-            <img src="https://cdn.prod.website-files.com/66dffa95f947b62fb545cc4d/66ef070c6c82ec49512c3e63_Analyzing%20Sports%20Apparel%20Preferences%20-%20Men%20and%20Women.webp">
-            <h3>Sports Wear</h3>
-            <p>Explore premium active wear collection.</p>
-
-            <!-- 🔗 LINK GOES HERE -->
-            <a href="wear.html">
-                <button>Enter Store</button>
-            </a>
-
+<section class="dashboard-container">
+    <div class="dashboard-header">
+        <h2>Explore Our Stores</h2>
+        <p>Choose your destination to browse our premium collection</p>
+    </div>
+    
+    <div class="store-entries">
+        <div class="store-card" onclick="window.location.href='wear.html'">
+            <div class="store-icon">👕</div>
+            <h3>Sports Wear Store</h3>
+            <p>Premium athletic apparel for every sport</p>
+            <div class="store-features">
+                <span>• Running Shoes</span>
+                <span>• Training Gear</span>
+                <span>• Sportswear</span>
+                <span>• Accessories</span>
+            </div>
+            <button class="store-btn primary">
+                Enter Store
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </button>
         </div>
-
-        <!-- SPORTS EQUIPMENT CARD -->
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b">
-            <h3>Sports Equipment</h3>
-            <p>High quality sports equipment collection.</p>
-
-            <!-- 🔗 LINK GOES HERE -->
-            <a href="equipment.html">
-                <button>Enter Store</button>
-            </a>
-
+        
+        <div class="store-card" onclick="window.location.href='equipment.html'">
+            <div class="store-icon">⚽</div>
+            <h3>Sports Equipment Store</h3>
+            <p>Professional equipment for peak performance</p>
+            <div class="store-features">
+                <span>• Basketball</span>
+                <span>• Cricket Gear</span>
+                <span>• Gym Equipment</span>
+                <span>• Training Tools</span>
+            </div>
+            <button class="store-btn secondary">
+                Enter Store
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </button>
         </div>
-
+    </div>
+    
+    <div class="quick-actions">
+        <div class="action-card">
+            <h4>🔍 Advanced Search</h4>
+            <p>Find exactly what you're looking for</p>
+            <a href="search.html" class="action-btn">Search Products</a>
+        </div>
+        
+        <div class="action-card">
+            <h4>🛒 Shopping Cart</h4>
+            <p>View your selected items</p>
+            <a href="cart.html" class="action-btn">View Cart</a>
+        </div>
+        
+        <div class="action-card">
+            <h4>👤 Account</h4>
+            <p>Login or create an account</p>
+            <a href="login.html" class="action-btn">Login</a>
+        </div>
     </div>
 </section>
 
 <footer>
-    <p>&copy; 2026 Athletiqo Co. All Rights Reserved.</p>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3>About Athletiqo</h3>
+            <p>India's premier destination for premium sports wear and equipment. We empower athletes with cutting-edge gear designed for champions.</p>
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <a href="#" style="font-size: 1.5rem;">📧</a>
+                <a href="#" style="font-size: 1.5rem;">📱</a>
+                <a href="#" style="font-size: 1.5rem;">📘</a>
+                <a href="#" style="font-size: 1.5rem;">📷</a>
+            </div>
+        </div>
+        
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <a href="index.html">Home</a><br>
+            <a href="wear.html">Sports Wear</a><br>
+            <a href="equipment.html">Sports Equipment</a><br>
+            <a href="cart.html">Shopping Cart</a><br>
+            <a href="#">About Us</a>
+        </div>
+        
+        <div class="footer-section">
+            <h3>Categories</h3>
+            <a href="#">Running Shoes</a><br>
+            <a href="#">Gym Equipment</a><br>
+            <a href="#">Basketball Gear</a><br>
+            <a href="#">Cricket Equipment</a><br>
+            <a href="#">Training Accessories</a>
+        </div>
+        
+        <div class="footer-section">
+            <h3>Customer Service</h3>
+            <a href="#">Contact Us</a><br>
+            <a href="#">Shipping Info</a><br>
+            <a href="#">Returns & Exchanges</a><br>
+            <a href="#">Size Guide</a><br>
+            <a href="#">FAQ</a>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        <p>&copy; 2026 Athletiqo Co. All Rights Reserved. | Premium Sports Wear & Equipment India</p>
+    </div>
 </footer>
 
 </body>

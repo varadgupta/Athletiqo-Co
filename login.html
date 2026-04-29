@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z15QG6XST2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z15QG6XST2');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - Athletiqo Co.</title>
+<link rel="stylesheet" href="style.css">
+<script src="script.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Google reCAPTCHA -->
+<script src="https://www.google.com/recaptcha/api.js?render=explicit&hl=en" async defer></script>
+<style>
+    .auth-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+    }
+    
+    .auth-card {
+        background: var(--bg-card);
+        border-radius: 20px;
+        box-shadow: 0 20px 60px var(--shadow-light);
+        overflow: hidden;
+        width: 100%;
+        max-width: 450px;
+        border: 1px solid var(--border-color);
+    }
+    
+    .auth-header {
+        background: var(--accent-gradient);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+    }
+    
+    .auth-header h1 {
+        margin: 0;
+        font-size: 2rem;
+        font-weight: 700;
+    }
+    
+    .auth-header p {
+        margin: 0.5rem 0 0 0;
+        opacity: 0.9;
+    }
+    
+    .auth-body {
+        padding: 2.5rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+    
+    .form-group input {
+        width: 100%;
+        padding: 1rem;
+        border: 2px solid var(--border-color);
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+    }
+    
+    .form-group input:focus {
+        outline: none;
+        border-color: var(--accent-primary);
+        box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.1);
+    }
+    
+    .password-toggle {
+        position: relative;
+    }
+    
+    .password-toggle button {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+    
+    .password-toggle button:hover {
+        color: var(--accent-primary);
+        background: rgba(255, 87, 34, 0.1);
+    }
+    
+    .error-message {
+        background: #ff4757;
+        color: white;
+        padding: 1rem;
+        border-radius: 10px;
+        margin-bottom: 1.5rem;
+        font-weight: 500;
+    }
+    
+    .success-message {
+        background: #00b894;
+        color: white;
+        padding: 1rem;
+        border-radius: 10px;
+        margin-bottom: 1.5rem;
+        font-weight: 500;
+    }
+    
+    .btn {
+        width: 100%;
+        padding: 1rem;
+        border: none;
+        border-radius: 10px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+    }
+    
+    .btn-primary {
+        background: var(--accent-gradient);
+        color: white;
+        box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(255, 87, 34, 0.4);
+    }
+    
+    .auth-links {
+        text-align: center;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border-color);
+    }
+    
+    .auth-links p {
+        color: var(--text-secondary);
+        margin: 0;
+    }
+    
+    .auth-links a {
+        color: var(--accent-primary);
+        text-decoration: none;
+        font-weight: 600;
+    }
+    
+    .auth-links a:hover {
+        text-decoration: underline;
+    }
+    
+    /* Google reCAPTCHA Styling */
+    .recaptcha-container {
+        margin: 1.5rem 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    
+    .g-recaptcha {
+        margin: 1rem 0;
+        transform: scale(0.95);
+        transform-origin: center;
+    }
+    
+    @media (max-width: 480px) {
+        .g-recaptcha {
+            transform: scale(0.85);
+        }
+    }
+    
+    .recaptcha-error {
+        color: #ff4757;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        text-align: center;
+        display: none;
+    }
+    
+    .recaptcha-loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+    
+    .recaptcha-spinner {
+        width: 16px;
+        height: 16px;
+        border: 2px solid var(--border-color);
+        border-top: 2px solid var(--accent-primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    /* Dark mode reCAPTCHA support */
+    [data-theme="dark"] .g-recaptcha {
+        filter: invert(0.9) hue-rotate(180deg);
+    }
+</style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>Welcome Back</h1>
+                <p>Login to your Athletiqo account</p>
+            </div>
+            
+            <div class="auth-body">
+                <div id="error-message" class="error-message" style="display: none;"></div>
+                <div id="success-message" class="success-message" style="display: none;"></div>
+                
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required 
+                               placeholder="Enter your email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="password-toggle">
+                            <input type="password" id="password" name="password" required 
+                                   placeholder="Enter your password">
+                            <button type="button" onclick="togglePassword('password')">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Security Verification</label>
+                        <div class="recaptcha-container">
+                            <div class="recaptcha-loading" id="recaptcha-loading">
+                                <div class="recaptcha-spinner"></div>
+                                <span>Loading security verification...</span>
+                            </div>
+                            <div id="recaptcha-widget" style="display: none;"></div>
+                            <div class="recaptcha-error" id="recaptcha-error">
+                                Please complete the security verification
+                            </div>
+                        </div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem; text-align: center;">
+                            Protected by Google reCAPTCHA
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        Login to Account
+                    </button>
+                </form>
+                
+                <div class="auth-links">
+                    <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+                    <p><a href="index.html">← Back to Home</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize theme
+        initializeTheme();
+        
+        // Google reCAPTCHA configuration
+        let recaptchaWidgetId = null;
+        const RECAPTCHA_SITE_KEY = '6Lfk7dAsAAAAAFm1VH8bxOm4Qp7tm0Wo1oI3cz1m'; // Production key
+        
+        // Initialize reCAPTCHA when page loads
+        function initRecaptcha() {
+            if (typeof grecaptcha !== 'undefined') {
+                // Hide loading spinner
+                document.getElementById('recaptcha-loading').style.display = 'none';
+                document.getElementById('recaptcha-widget').style.display = 'block';
+                
+                // Render reCAPTCHA widget
+                recaptchaWidgetId = grecaptcha.render('recaptcha-widget', {
+                    'sitekey': RECAPTCHA_SITE_KEY,
+                    'theme': document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light',
+                    'size': 'normal',
+                    'type': 'image',
+                    'callback': onRecaptchaSuccess,
+                    'expired-callback': onRecaptchaExpired,
+                    'error-callback': onRecaptchaError
+                });
+            } else {
+                // Retry after a short delay if reCAPTCHA script hasn't loaded yet
+                setTimeout(initRecaptcha, 100);
+            }
+        }
+        
+        // reCAPTCHA success callback
+        function onRecaptchaSuccess(token) {
+            console.log('reCAPTCHA verification successful');
+            document.getElementById('recaptcha-error').style.display = 'none';
+        }
+        
+        // reCAPTCHA expired callback
+        function onRecaptchaExpired() {
+            console.log('reCAPTCHA expired');
+            document.getElementById('recaptcha-error').textContent = 'Security verification expired. Please try again.';
+            document.getElementById('recaptcha-error').style.display = 'block';
+        }
+        
+        // reCAPTCHA error callback
+        function onRecaptchaError() {
+            console.error('reCAPTCHA error occurred');
+            document.getElementById('recaptcha-error').textContent = 'Security verification failed. Please refresh the page.';
+            document.getElementById('recaptcha-error').style.display = 'block';
+        }
+        
+        // Get reCAPTCHA response token
+        function getRecaptchaResponse() {
+            if (recaptchaWidgetId !== null) {
+                return grecaptcha.getResponse(recaptchaWidgetId);
+            }
+            return null;
+        }
+        
+        // Reset reCAPTCHA
+        function resetRecaptcha() {
+            if (recaptchaWidgetId !== null) {
+                grecaptcha.reset(recaptchaWidgetId);
+                document.getElementById('recaptcha-error').style.display = 'none';
+            }
+        }
+        
+        // Initialize reCAPTCHA after page loads
+        window.addEventListener('load', function() {
+            setTimeout(initRecaptcha, 500); // Small delay to ensure everything is loaded
+        });
+        
+        // Handle theme changes for reCAPTCHA
+        const originalToggleTheme = window.toggleTheme;
+        window.toggleTheme = function() {
+            originalToggleTheme();
+            // Reset reCAPTCHA to apply new theme
+            setTimeout(resetRecaptcha, 100);
+        };
+        
+        // Toggle password visibility
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const button = input.nextElementSibling;
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                button.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                        <line x1="1" y1="1" x2="23" y2="23"/>
+                    </svg>
+                `;
+            } else {
+                input.type = 'password';
+                button.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                `;
+            }
+        }
+        
+        // Handle form submission
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const recaptchaResponse = getRecaptchaResponse();
+            const errorDiv = document.getElementById('error-message');
+            const successDiv = document.getElementById('success-message');
+            const recaptchaError = document.getElementById('recaptcha-error');
+            
+            // Hide previous messages
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+            recaptchaError.style.display = 'none';
+            
+            // Validate form fields
+            if (!email || !password) {
+                errorDiv.textContent = 'Please fill in all fields.';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            // Validate email format
+            if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                errorDiv.textContent = 'Please enter a valid email address.';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            // Validate reCAPTCHA
+            if (!recaptchaResponse) {
+                recaptchaError.textContent = 'Please complete the security verification.';
+                recaptchaError.style.display = 'block';
+                return;
+            }
+            
+            // Show loading state
+            const submitButton = document.querySelector('.btn-primary');
+            const originalText = submitButton.textContent;
+            submitButton.textContent = 'Verifying...';
+            submitButton.disabled = true;
+            
+            // Send login request to backend
+            fetch('login-process.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                    'g-recaptcha-response': recaptchaResponse
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Store user session
+                    localStorage.setItem('userLoggedIn', 'true');
+                    localStorage.setItem('userEmail', email);
+                    localStorage.setItem('userName', data.userName || email.split('@')[0]);
+                    localStorage.setItem('userId', data.userId || '1');
+                    
+                    successDiv.textContent = 'Login successful! Redirecting...';
+                    successDiv.style.display = 'block';
+                    
+                    // Redirect to home page after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
+                } else {
+                    errorDiv.textContent = data.error || 'Login failed. Please try again.';
+                    errorDiv.style.display = 'block';
+                    resetRecaptcha(); // Reset reCAPTCHA on failed login
+                }
+            })
+            .catch(error => {
+                console.error('Login error:', error);
+                errorDiv.textContent = 'Network error. Please try again.';
+                errorDiv.style.display = 'block';
+                resetRecaptcha(); // Reset reCAPTCHA on error
+            })
+            .finally(() => {
+                // Restore button state
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>

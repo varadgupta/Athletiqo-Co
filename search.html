@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z15QG6XST2"></script>
@@ -10,13 +10,430 @@
 
   gtag('config', 'G-Z15QG6XST2');
 </script>
-<title>Search Results - Athletiqo</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Search - Athletiqo Co.</title>
 <link rel="stylesheet" href="style.css">
 <script src="script.js"></script>
+<script>
+// Advanced Search Functionality
+let currentResults = [];
+let activeFilters = {
+    category: '',
+    subcategory: '',
+    minPrice: null,
+    maxPrice: null,
+    quickFilters: []
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    initializeTheme();
+    initializeMobileMenu();
+    initializeSearch();
+    updateCartCount();
+    loadAllProducts();
+});
+
+function loadAllProducts() {
+    currentResults = [...products];
+    displayResults(currentResults);
+    updateResultsCount(currentResults.length);
+}
+
+function performAdvancedSearch() {
+    const searchTerm = document.getElementById('search-input').value.toLowerCase();
+    
+    if (!searchTerm) {
+        currentResults = [...products];
+    } else {
+        currentResults = products.filter(product => 
+            product.name.toLowerCase().includes(searchTerm) ||
+            product.keywords.some(keyword => keyword.toLowerCase().includes(searchTerm)) ||
+            product.category.toLowerCase().includes(searchTerm) ||
+            product.subcategory.toLowerCase().includes(searchTerm)
+        );
+    }
+    
+    applyFilters();
+}
+
+function applyFilters() {
+    const category = document.getElementById('category-filter').value;
+    const subcategory = document.getElementById('subcategory-filter').value;
+    const minPrice = parseFloat(document.getElementById('min-price').value) || null;
+    const maxPrice = parseFloat(document.getElementById('max-price').value) || null;
+    
+    activeFilters.category = category;
+    activeFilters.subcategory = subcategory;
+    activeFilters.minPrice = minPrice;
+    activeFilters.maxPrice = maxPrice;
+    
+    let filteredResults = [...currentResults];
+    
+    // Apply category filter
+    if (category) {
+        filteredResults = filteredResults.filter(product => product.category === category);
+    }
+    
+    // Apply subcategory filter
+    if (subcategory) {
+        filteredResults = filteredResults.filter(product => product.subcategory === subcategory);
+    }
+    
+    // Apply price filters
+    if (minPrice !== null) {
+        filteredResults = filteredResults.filter(product => product.price >= minPrice);
+    }
+    if (maxPrice !== null) {
+        filteredResults = filteredResults.filter(product => product.price <= maxPrice);
+    }
+    
+    // Apply quick filters
+    activeFilters.quickFilters.forEach(filter => {
+        switch(filter) {
+            case 'under1000':
+                filteredResults = filteredResults.filter(product => product.price < 1000);
+                break;
+            case '1000to2000':
+                filteredResults = filteredResults.filter(product => product.price >= 1000 && product.price <= 2000);
+                break;
+            case '2000to5000':
+                filteredResults = filteredResults.filter(product => product.price >= 2000 && product.price <= 5000);
+                break;
+            case 'over5000':
+                filteredResults = filteredResults.filter(product => product.price > 5000);
+                break;
+        }
+    });
+    
+    displayResults(filteredResults);
+    updateResultsCount(filteredResults.length);
+}
+
+function toggleQuickFilter(filterType) {
+    const index = activeFilters.quickFilters.indexOf(filterType);
+    const button = event.target;
+    
+    if (index > -1) {
+        activeFilters.quickFilters.splice(index, 1);
+        button.classList.remove('active');
+    } else {
+        activeFilters.quickFilters.push(filterType);
+        button.classList.add('active');
+    }
+    
+    applyFilters();
+}
+
+function sortProducts() {
+    const sortBy = document.getElementById('sort-select').value;
+    let sortedResults = [...currentResults];
+    
+    switch(sortBy) {
+        case 'price-low':
+            sortedResults.sort((a, b) => a.price - b.price);
+            break;
+        case 'price-high':
+            sortedResults.sort((a, b) => b.price - a.price);
+            break;
+        case 'name':
+            sortedResults.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+        case 'newest':
+            sortedResults.sort((a, b) => b.id - a.id);
+            break;
+        case 'relevance':
+        default:
+            // Keep original order for relevance
+            break;
+    }
+    
+    currentResults = sortedResults;
+    applyFilters();
+}
+
+function resetFilters() {
+    // Reset all filter inputs
+    document.getElementById('category-filter').value = '';
+    document.getElementById('subcategory-filter').value = '';
+    document.getElementById('min-price').value = '';
+    document.getElementById('max-price').value = '';
+    document.getElementById('sort-select').value = 'relevance';
+    
+    // Reset active filters
+    activeFilters = {
+        category: '',
+        subcategory: '',
+        minPrice: null,
+        maxPrice: null,
+        quickFilters: []
+    };
+    
+    // Remove active class from quick filter buttons
+    document.querySelectorAll('.filter-tag').forEach(tag => {
+        tag.classList.remove('active');
+    });
+    
+    // Reload all products
+    loadAllProducts();
+    showNotification('Filters reset successfully', 'info');
+}
+
+function displayResults(results) {
+    const resultsContainer = document.getElementById('search-results');
+    
+    if (results.length === 0) {
+        resultsContainer.innerHTML = `
+            <div style="text-align: center; padding: 60px 20px; background: var(--bg-card); border-radius: 16px; box-shadow: 0 8px 32px var(--shadow-light); border: 1px solid var(--border-color);">
+                <div style="font-size: 4rem; margin-bottom: 2rem;">🔍</div>
+                <h3 style="color: var(--text-primary); margin-bottom: 1rem; font-size: 1.5rem;">No products found</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 1.1rem;">Try adjusting your search terms or filters</p>
+                <button onclick="resetFilters()" class="btn btn-primary">
+                    Reset Filters
+                </button>
+            </div>
+        `;
+        return;
+    }
+    
+    resultsContainer.innerHTML = results.map(product => `
+        <div class="card">
+            <img src="${product.image}" alt="${product.name}">
+            <div class="card-content">
+                <h3>${product.name}</h3>
+                <p>${product.category.charAt(0).toUpperCase() + product.category.slice(1)} - ${product.subcategory.charAt(0).toUpperCase() + product.subcategory.slice(1)}</p>
+                <div class="price">${product.price.toLocaleString('en-IN')}</div>
+                <div class="card-actions">
+                    <button class="btn btn-success" onclick="addToCart(${product.id})">Add to Cart</button>
+                    <a href="${product.buyLink}" target="_blank" class="btn btn-secondary">Buy Now</a>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function updateResultsCount(count) {
+    document.getElementById('results-count').textContent = `Showing ${count} product${count !== 1 ? 's' : ''}`;
+}
+
+// Enhanced search suggestions
+document.getElementById('search-input').addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    const suggestionsContainer = document.getElementById('search-suggestions');
+    
+    if (searchTerm.length < 2) {
+        suggestionsContainer.classList.remove('active');
+        return;
+    }
+    
+    const suggestions = products
+        .filter(product => 
+            product.name.toLowerCase().includes(searchTerm) ||
+            product.keywords.some(keyword => keyword.toLowerCase().includes(searchTerm))
+        )
+        .slice(0, 5);
+    
+    if (suggestions.length > 0) {
+        suggestionsContainer.innerHTML = suggestions.map(product => `
+            <div class="suggestion-item" onclick="selectSuggestion('${product.name}')">
+                <strong>${highlightMatch(product.name, searchTerm)}</strong>
+                <div style="font-size: 0.85rem; color: var(--text-secondary);">${product.category} - ${product.subcategory}</div>
+            </div>
+        `).join('');
+        suggestionsContainer.classList.add('active');
+    } else {
+        suggestionsContainer.classList.remove('active');
+    }
+});
+
+function highlightMatch(text, searchTerm) {
+    const regex = new RegExp(`(${searchTerm})`, 'gi');
+    return text.replace(regex, '<strong>$1</strong>');
+}
+
+function selectSuggestion(productName) {
+    document.getElementById('search-input').value = productName;
+    document.getElementById('search-suggestions').classList.remove('active');
+    performAdvancedSearch();
+}
+
+// Close suggestions when clicking outside
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.search-container')) {
+        document.getElementById('search-suggestions').classList.remove('active');
+    }
+});
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+    .search-filters {
+        background: var(--bg-card);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 8px 32px var(--shadow-light);
+        border: 1px solid var(--border-color);
+    }
+    
+    .filter-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .filter-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+    
+    .filter-group select,
+    .filter-group input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid var(--border-color);
+        border-radius: 8px;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .filter-group select:focus,
+    .filter-group input:focus {
+        outline: none;
+        border-color: var(--accent-primary);
+        box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.1);
+    }
+    
+    .price-range {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+    
+    .price-range input {
+        flex: 1;
+    }
+    
+    .filter-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+    
+    .filter-tag {
+        background: var(--accent-gradient);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+    }
+    
+    .filter-tag:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 87, 34, 0.3);
+    }
+    
+    .filter-tag.active {
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        border: 2px solid var(--accent-primary);
+    }
+    
+    .sort-options {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+    
+    .sort-options select {
+        padding: 0.75rem 1rem;
+        border: 2px solid var(--border-color);
+        border-radius: 8px;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        font-size: 1rem;
+        cursor: pointer;
+    }
+    
+    .results-count {
+        color: var(--text-secondary);
+        font-weight: 500;
+        margin-left: auto;
+    }
+    
+    .search-suggestions {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        box-shadow: 0 8px 32px var(--shadow-light);
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 1000;
+        display: none;
+    }
+    
+    .search-suggestions.active {
+        display: block;
+    }
+    
+    .suggestion-item {
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .suggestion-item:last-child {
+        border-bottom: none;
+    }
+    
+    .suggestion-item:hover {
+        background: var(--bg-secondary);
+    }
+    
+    .suggestion-item strong {
+        color: var(--accent-primary);
+    }
+    
+    @media (max-width: 768px) {
+        .search-filters {
+            padding: 1.5rem;
+        }
+        
+        .price-range {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .sort-options {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .results-count {
+            margin-left: 0;
+            margin-top: 1rem;
+        }
+    }
+</style>
 </head>
 <body>
 
-<header class="main-header">
+<header>
     <div class="header-content">
         <div class="logo-section">
             <h1>Athletiqo Co.</h1>
@@ -24,114 +441,121 @@
         </div>
         <div class="header-actions">
             <div class="search-container">
-                <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                    <input type="text" id="search-input" placeholder="Search products..." style="background: transparent; border: none; color: white; padding: 12px 15px; font-size: 14px; width: 150px; outline: none; font-weight: 500; letter-spacing: 0.5px;">
-                    <button onclick="searchCategory('basketball')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Basketball</button>
-                    <button onclick="searchCategory('shoes')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Shoes</button>
-                    <button onclick="searchCategory('cricket')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Cricket</button>
-                    <button onclick="searchCategory('gym')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Gym</button>
-                    <button onclick="searchCategory('tshirt')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">T-Shirt</button>
-                    <button onclick="searchCategory('tracktop')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Tracktop</button>
-                    <button onclick="searchCategory('trackpant')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Trackpant</button>
-                    <button onclick="searchCategory('handgrip')" style="background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 10px; border-radius: 15px; font-size: 11px; cursor: pointer; font-weight: 500;">Hand Grip</button>
-                    <button id="search-button" onclick="performSearch()" style="background: linear-gradient(135deg, #ff5722, #ff9800); border: none; color: white; padding: 8px 12px; border-radius: 20px; cursor: pointer; font-size: 14px; margin: 2px; box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);">🔍</button>
+                <div class="category-pills">
+                    <input type="text" id="search-input" placeholder="Search products...">
+                    <button id="search-button" onclick="performAdvancedSearch()">🔍</button>
                 </div>
+                <div class="search-suggestions" id="search-suggestions"></div>
             </div>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+            </button>
             <a href="#" class="cart-button" onclick="showCart(); return false;">
-                Cart (0)
+                🛒 Cart (0)
             </a>
         </div>
     </div>
 </header>
 
 <nav>
-    <a href="index.html">Home</a>
-    <a href="wear.html">Sports Wear</a>
-    <a href="equipment.html">Sports Equipment</a>
+    <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <div class="nav-container">
+        <a href="index.html">Home</a>
+        <a href="wear.html">Sports Wear</a>
+        <a href="equipment.html">Sports Equipment</a>
+        <a href="search.html" class="active">Advanced Search</a>
+    </div>
 </nav>
 
 <section class="hero category-hero">
-    <h2>Search Results</h2>
+    <div class="hero-content">
+        <h2>Advanced Product Search</h2>
+        <p>Find exactly what you're looking for with our powerful search filters</p>
+    </div>
 </section>
 
 <section class="container">
-    <h2 class="section-title">Search Results</h2>
-    <div class="products">
+    <div class="search-filters">
+        <h3 style="margin-bottom: 1.5rem; color: var(--text-primary);">Search Filters</h3>
         
-        <!-- Sports Wear Results -->
-        <div class="card">
-            <img src="https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT-73mzz_opcEj925iNhtiTrMGr2Hw6zfmhMdm38YcIfBe0yrbOJi8fMW5iw48gWyvD7e3YfCnGXpthhxWP8kMxOFAUu5IsImYiY8ViHSc1kA2jscvitd3zTw&usqp=CAc">
-            <h3>Cult Men's Running Shoes-Off White</h3>
-            <div class="price">₹2,299</div>
-            <a href="https://cultstore.com/products/cult-men-s-traverse-running-shoes-off-white" target="_blank">
-                <button>Buy Now</button>
-            </a>
+        <div class="filter-group">
+            <label for="category-filter">Category</label>
+            <select id="category-filter" onchange="applyFilters()">
+                <option value="">All Categories</option>
+                <option value="wear">Sports Wear</option>
+                <option value="equipment">Sports Equipment</option>
+            </select>
         </div>
-
-        <div class="card">
-            <img src="https://contents.mediadecathlon.com/p2273704/45979084bc75f77fb9b7c3a4efc12751/p2273704.jpg">
-            <h3>DOMYOS - Men Gym Trackpant Convertible</h3>
-            <div class="price">₹999</div>
-            <a href="https://www.decathlon.in/p/8731703/men-gym-trackpant-convertible-jog-fit-quick-dry-zip-pockets-500-black" target="_blank">
-                <button>Buy Now</button>
-            </a>
+        
+        <div class="filter-group">
+            <label for="subcategory-filter">Subcategory</label>
+            <select id="subcategory-filter" onchange="applyFilters()">
+                <option value="">All Subcategories</option>
+                <option value="shoes">Shoes</option>
+                <option value="tshirt">T-Shirt</option>
+                <option value="tracktop">Tracktop</option>
+                <option value="trackpant">Trackpant</option>
+                <option value="basketball">Basketball</option>
+                <option value="cricket">Cricket</option>
+                <option value="gym">Gym</option>
+                <option value="handgrip">Hand Grip</option>
+            </select>
         </div>
-
-        <div class="card">
-            <img src="https://imagescdn.reebok.in/img/app/product/9/957428-12396402.jpg?auto=format&w=390">
-            <h3>Reebok Unisex Ri Vector Knit Tracktop</h3>
-            <div class="price">₹1,799</div>
-            <a href="https://reebok.abfrl.in/p/reebok-unisex-ri-vector-knit-tracktop-957428.html?source=plp" target="_blank">
-                <button>Buy Now</button>
-            </a>
+        
+        <div class="filter-group">
+            <label>Price Range</label>
+            <div class="price-range">
+                <input type="number" id="min-price" placeholder="Min" min="0" onchange="applyFilters()">
+                <span>-</span>
+                <input type="number" id="max-price" placeholder="Max" min="0" onchange="applyFilters()">
+            </div>
         </div>
-
-        <div class="card">
-            <img src="https://m.media-amazon.com/images/I/61J2-dVzIgL._SY879_.jpg">
-            <h3>Men's Full Sleeve Compression T-Shirt</h3>
-            <div class="price">₹899</div>
-            <a href="https://www.amazon.in/FUAARK-Mens-Sleeve-Compression-T-Shirt/dp/B0C5SVCGM6?ref_=ast_sto_dp&th=1&psc=1" target="_blank">
-                <button>Buy Now</button>
-            </a>
+        
+        <div class="filter-group">
+            <label>Quick Filters</label>
+            <div class="filter-tags">
+                <button class="filter-tag" onclick="toggleQuickFilter('under1000')">Under ₹1,000</button>
+                <button class="filter-tag" onclick="toggleQuickFilter('1000to2000')">₹1,000 - ₹2,000</button>
+                <button class="filter-tag" onclick="toggleQuickFilter('2000to5000')">₹2,000 - ₹5,000</button>
+                <button class="filter-tag" onclick="toggleQuickFilter('over5000')">Over ₹5,000</button>
+                <button class="filter-tag" onclick="toggleQuickFilter('newarrivals')">New Arrivals</button>
+                <button class="filter-tag" onclick="toggleQuickFilter('bestsellers')">Best Sellers</button>
+            </div>
         </div>
-
-        <!-- Sports Equipment Results -->
-        <div class="card">
-            <img src="https://m.media-amazon.com/images/I/61eYoqYP2TL._AC_UL480_FMwebp_QL65_.jpg">
-            <h3>Boldfit Adjustable Hand Grip</h3>
-            <div class="price">₹299</div>
-            <a href="https://amzn.in/d/04hoirIg" target="_blank">
-                <button>Buy Now</button>
-            </a>
-        </div>
-
-        <div class="card">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1voFYoBEsu09Wk_ZzJ0Vjfwp8TajnE3snCg&s">
-            <h3>Basketball BT900 - Size 7</h3>
-            <div class="price">₹1,999</div>
-            <a href="https://www.decathlon.in/p/8648080/basketball-bt900-size-7fiba-approved-for-boys-and-adults" target="_blank">
-                <button>Buy Now</button>
-            </a>
-        </div>
-
-        <div class="card">
-            <img src="https://www.sstoncricket.com/wp-content/uploads/2023/04/56A51367-scaled-370x493.jpg">
-            <h3>SS Ikon Kashmir Willow Cricket Bat</h3>
-            <div class="price">₹2,654</div>
-            <a href="https://www.sstoncricket.com/ss-ikon-kashmir-willow-cricket-bat-sh.html" target="_blank">
-                <button>Buy Now</button>
-            </a>
-        </div>
-
-        <div class="card">
-            <img src="https://contents.mediadecathlon.com/p2300404/5f3428e7ca71a6b8d65702dd8bffdcdc/p2300404.jpg">
-            <h3>Gym Weight Training Station Full Body Workout at Home</h3>
-            <div class="price">₹35,999</div>
-            <a href="https://www.decathlon.in/p/8484134/gym-weight-training-station-full-body-workout-at-home-home-gym-900-black" target="_blank">
-                <button>Buy Now</button>
-            </a>
-        </div>
-
+        
+        <button onclick="resetFilters()" class="btn btn-outline" style="width: 100%; margin-top: 1rem;">
+            Reset All Filters
+        </button>
+    </div>
+    
+    <div class="sort-options">
+        <label for="sort-select" style="font-weight: 600; color: var(--text-primary);">Sort by:</label>
+        <select id="sort-select" onchange="sortProducts()">
+            <option value="relevance">Relevance</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="name">Name: A to Z</option>
+            <option value="newest">Newest First</option>
+        </select>
+        <div class="results-count" id="results-count">Showing 0 products</div>
+    </div>
+    
+    <div class="products" id="search-results">
+        <!-- Search results will be displayed here -->
     </div>
 </section>
 

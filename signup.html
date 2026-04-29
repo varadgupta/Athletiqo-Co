@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z15QG6XST2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z15QG6XST2');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up - Athletiqo Co.</title>
+<link rel="stylesheet" href="style.css">
+<script src="script.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Google reCAPTCHA -->
+<script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoadCallback&render=explicit&hl=en" async defer></script>
+<style>
+    .auth-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+    }
+    
+    .auth-card {
+        background: var(--bg-card);
+        border-radius: 20px;
+        box-shadow: 0 20px 60px var(--shadow-light);
+        overflow: hidden;
+        width: 100%;
+        max-width: 500px;
+        border: 1px solid var(--border-color);
+    }
+    
+    .auth-header {
+        background: var(--accent-gradient);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+    }
+    
+    .auth-header h1 {
+        margin: 0;
+        font-size: 2rem;
+        font-weight: 700;
+    }
+    
+    .auth-header p {
+        margin: 0.5rem 0 0 0;
+        opacity: 0.9;
+    }
+    
+    .auth-body {
+        padding: 2.5rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+    
+    .form-group input {
+        width: 100%;
+        padding: 1rem;
+        border: 2px solid var(--border-color);
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+    }
+    
+    .form-group input:focus {
+        outline: none;
+        border-color: var(--accent-primary);
+        box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.1);
+    }
+    
+    .password-toggle {
+        position: relative;
+    }
+    
+    .password-toggle button {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+    
+    .password-toggle button:hover {
+        color: var(--accent-primary);
+        background: rgba(255, 87, 34, 0.1);
+    }
+    
+    .error-message {
+        background: #ff4757;
+        color: white;
+        padding: 1rem;
+        border-radius: 10px;
+        margin-bottom: 1.5rem;
+        font-weight: 500;
+    }
+    
+    .success-message {
+        background: #00b894;
+        color: white;
+        padding: 1rem;
+        border-radius: 10px;
+        margin-bottom: 1.5rem;
+        font-weight: 500;
+    }
+    
+    .btn {
+        width: 100%;
+        padding: 1rem;
+        border: none;
+        border-radius: 10px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+    }
+    
+    .btn-primary {
+        background: var(--accent-gradient);
+        color: white;
+        box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(255, 87, 34, 0.4);
+    }
+    
+    .auth-links {
+        text-align: center;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border-color);
+    }
+    
+    .auth-links p {
+        color: var(--text-secondary);
+        margin: 0;
+    }
+    
+    .auth-links a {
+        color: var(--accent-primary);
+        text-decoration: none;
+        font-weight: 600;
+    }
+    
+    .auth-links a:hover {
+        text-decoration: underline;
+    }
+    
+    /* Google reCAPTCHA Styling */
+    .recaptcha-container {
+        margin: 1.5rem 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    
+    .g-recaptcha {
+        margin: 1rem 0;
+        transform: scale(0.95);
+        transform-origin: center;
+    }
+    
+    @media (max-width: 480px) {
+        .g-recaptcha {
+            transform: scale(0.85);
+        }
+    }
+    
+    .recaptcha-error {
+        color: #ff4757;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        text-align: center;
+        display: none;
+    }
+    
+    .recaptcha-loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+    
+    .recaptcha-spinner {
+        width: 16px;
+        height: 16px;
+        border: 2px solid var(--border-color);
+        border-top: 2px solid var(--accent-primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    /* Dark mode reCAPTCHA support */
+    [data-theme="dark"] .g-recaptcha {
+        filter: invert(0.9) hue-rotate(180deg);
+    }
+</style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>Create Account</h1>
+                <p>Join the Athletiqo community</p>
+            </div>
+            
+            <div class="auth-body">
+                <div id="error-message" class="error-message" style="display: none;"></div>
+                <div id="success-message" class="success-message" style="display: none;"></div>
+                
+                <form id="signup-form">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required 
+                               placeholder="Enter your full name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="profile_photo">Profile Photo (Optional)</label>
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <div style="position: relative;">
+                                <img id="photo_preview" src="" alt="Profile Preview" 
+                                     style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid var(--border-color); display: none;">
+                                <div id="photo_placeholder" 
+                                     style="width: 100px; height: 100px; border-radius: 50%; background: var(--bg-secondary); border: 3px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--text-secondary);">
+                                    👤
+                                </div>
+                                <input type="file" id="profile_photo" name="profile_photo" accept="image/*" 
+                                       style="position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer;"
+                                       onchange="previewPhoto(event)">
+                            </div>
+                            <div>
+                                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+                                    Click to upload profile photo
+                                </div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted);">
+                                    Max size: 2MB, JPG/PNG only
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required 
+                               placeholder="Enter your email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="password-toggle">
+                            <input type="password" id="password" name="password" required 
+                                   placeholder="Enter your password" minlength="8">
+                            <button type="button" onclick="togglePassword('password')">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm Password</label>
+                        <div class="password-toggle">
+                            <input type="password" id="confirm_password" name="confirm_password" required 
+                                   placeholder="Confirm your password" minlength="8">
+                            <button type="button" onclick="togglePassword('confirm_password')">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="canvas-captcha-group">
+                        <label for="captcha">Security Verification</label>
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <input type="text" id="captcha" name="captcha" required 
+                                   placeholder="Enter code" style="flex: 1;"
+                                   maxlength="6">
+                            <canvas id="captcha-canvas" width="150" height="50" 
+                                    style="border: 2px solid var(--border-color); border-radius: 8px; cursor: pointer;"
+                                    onclick="generateCaptcha()"
+                                    title="Click to refresh"></canvas>
+                        </div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                            Click on the image to refresh the code
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="google-recaptcha-group" style="display: none;">
+                        <label>Advanced Security Verification</label>
+                        <div class="recaptcha-container">
+                            <div class="recaptcha-loading" id="recaptcha-loading">
+                                <div class="recaptcha-spinner"></div>
+                                <span>Loading security verification...</span>
+                            </div>
+                            <div id="recaptcha-widget" style="display: none;"></div>
+                            <div class="recaptcha-error" id="recaptcha-error">
+                                Please complete the security verification
+                            </div>
+                        </div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem; text-align: center;">
+                            Protected by Google reCAPTCHA
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        Create Account
+                    </button>
+                </form>
+                
+                <div class="auth-links">
+                    <p>Already have an account? <a href="login.html">Login</a></p>
+                    <p><a href="index.html">← Back to Home</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize theme
+        initializeTheme();
+        
+        // Dual CAPTCHA system
+        let captchaCode = '';
+        let recaptchaWidgetId = null;
+        let currentStep = 1; // 1 = Canvas CAPTCHA, 2 = Google reCAPTCHA
+        const RECAPTCHA_SITE_KEY = '6Lfk7dAsAAAAAFm1VH8bxOm4Qp7tm0Wo1oI3cz1m'; // Production key
+        let recaptchaLoaded = false;
+        
+        // Generate Canvas CAPTCHA
+        function generateCaptcha() {
+            const canvas = document.getElementById('captcha-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Generate random code
+            const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            captchaCode = '';
+            for (let i = 0; i < 6; i++) {
+                captchaCode += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            
+            // Draw background
+            ctx.fillStyle = '#f0f0f0';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw noise lines
+            for (let i = 0; i < 5; i++) {
+                ctx.strokeStyle = '#ddd';
+                ctx.beginPath();
+                ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+                ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+                ctx.stroke();
+            }
+            
+            // Draw text
+            ctx.font = 'bold 24px Arial';
+            ctx.fillStyle = '#333';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            for (let i = 0; i < captchaCode.length; i++) {
+                const x = 25 + i * 20;
+                const y = 25 + Math.random() * 10 - 5;
+                const angle = (Math.random() - 0.5) * 0.4;
+                
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(angle);
+                ctx.fillText(captchaCode[i], 0, 0);
+                ctx.restore();
+            }
+        }
+        
+        // Global callback for reCAPTCHA load
+        function onRecaptchaLoadCallback() {
+            console.log('reCAPTCHA script loaded successfully');
+            recaptchaLoaded = true;
+        }
+        
+        // Initialize Google reCAPTCHA (only when needed)
+        function initRecaptcha() {
+            if (recaptchaLoaded && typeof grecaptcha !== 'undefined') {
+                // Hide loading spinner
+                document.getElementById('recaptcha-loading').style.display = 'none';
+                document.getElementById('recaptcha-widget').style.display = 'block';
+                
+                // Clear any existing content
+                document.getElementById('recaptcha-widget').innerHTML = '';
+                
+                // Render reCAPTCHA widget
+                try {
+                    recaptchaWidgetId = grecaptcha.render('recaptcha-widget', {
+                        'sitekey': RECAPTCHA_SITE_KEY,
+                        'theme': document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light',
+                        'size': 'normal',
+                        'type': 'image',
+                        'callback': onRecaptchaSuccess,
+                        'expired-callback': onRecaptchaExpired,
+                        'error-callback': onRecaptchaError
+                    });
+                    console.log('reCAPTCHA widget rendered successfully');
+                } catch (error) {
+                    console.error('reCAPTCHA render error:', error);
+                    onRecaptchaError();
+                }
+            } else {
+                // Wait for reCAPTCHA to load
+                console.log('Waiting for reCAPTCHA to load...');
+                setTimeout(initRecaptcha, 500);
+            }
+        }
+        
+        // reCAPTCHA success callback
+        function onRecaptchaSuccess(token) {
+            console.log('reCAPTCHA verification successful');
+            document.getElementById('recaptcha-error').style.display = 'none';
+        }
+        
+        // reCAPTCHA expired callback
+        function onRecaptchaExpired() {
+            console.log('reCAPTCHA expired');
+            document.getElementById('recaptcha-error').textContent = 'Security verification expired. Please try again.';
+            document.getElementById('recaptcha-error').style.display = 'block';
+        }
+        
+        // reCAPTCHA error callback
+        function onRecaptchaError() {
+            console.error('reCAPTCHA error occurred');
+            const recaptchaError = document.getElementById('recaptcha-error');
+            
+            // Try to render again with different approach
+            setTimeout(() => {
+                if (recaptchaLoaded && typeof grecaptcha !== 'undefined') {
+                    try {
+                        // Clear and retry
+                        document.getElementById('recaptcha-widget').innerHTML = '';
+                        recaptchaWidgetId = grecaptcha.render('recaptcha-widget', {
+                            'sitekey': RECAPTCHA_SITE_KEY,
+                            'theme': 'light',
+                            'size': 'normal',
+                            'type': 'image',
+                            'callback': onRecaptchaSuccess,
+                            'expired-callback': onRecaptchaExpired,
+                            'error-callback': function() {
+                                console.log('Second attempt failed, showing fallback');
+                                showFallbackOption();
+                            }
+                        });
+                    } catch (error) {
+                        console.log('Retry failed, showing fallback');
+                        showFallbackOption();
+                    }
+                } else {
+                    showFallbackOption();
+                }
+            }, 1000);
+        }
+        
+        function showFallbackOption() {
+            const recaptchaError = document.getElementById('recaptcha-error');
+            recaptchaError.innerHTML = `
+                <div style="margin-bottom: 1rem;">
+                    <strong>Google reCAPTCHA Loading Issue</strong><br>
+                    Using enhanced canvas security instead for immediate access.
+                </div>
+                <button type="button" onclick="useEnhancedCanvasSecurity()" 
+                        style="background: var(--accent-gradient); color: white; border: none; 
+                               padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                    Continue with Enhanced Security
+                </button>
+            `;
+            recaptchaError.style.display = 'block';
+            
+            // Hide the reCAPTCHA widget
+            document.getElementById('recaptcha-widget').style.display = 'none';
+        }
+        
+        // Get reCAPTCHA response token
+        function getRecaptchaResponse() {
+            if (recaptchaWidgetId !== null) {
+                return grecaptcha.getResponse(recaptchaWidgetId);
+            }
+            return null;
+        }
+        
+        // Reset reCAPTCHA
+        function resetRecaptcha() {
+            if (recaptchaWidgetId !== null) {
+                grecaptcha.reset(recaptchaWidgetId);
+                document.getElementById('recaptcha-error').style.display = 'none';
+            }
+        }
+        
+        // Move to step 2 (Google reCAPTCHA)
+        function moveToStep2() {
+            currentStep = 2;
+            
+            // Hide canvas CAPTCHA
+            document.getElementById('canvas-captcha-group').style.display = 'none';
+            
+            // Show Google reCAPTCHA
+            document.getElementById('google-recaptcha-group').style.display = 'block';
+            
+            // Initialize Google reCAPTCHA if not already loaded
+            if (recaptchaWidgetId === null) {
+                setTimeout(initRecaptcha, 500);
+            }
+            
+            // Update button text
+            const submitButton = document.querySelector('.btn-primary');
+            submitButton.textContent = 'Complete Registration';
+        }
+        
+        // Fallback to enhanced canvas security
+        function useEnhancedCanvasSecurity() {
+            // Hide Google reCAPTCHA section
+            document.getElementById('google-recaptcha-group').style.display = 'none';
+            
+            // Show enhanced canvas CAPTCHA section
+            const enhancedCaptchaGroup = document.createElement('div');
+            enhancedCaptchaGroup.className = 'form-group';
+            enhancedCaptchaGroup.id = 'enhanced-captcha-group';
+            enhancedCaptchaGroup.innerHTML = `
+                <label>Enhanced Security Verification</label>
+                <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem;">
+                    <input type="text" id="enhanced-captcha" name="enhanced-captcha" required 
+                           placeholder="Enter enhanced code" style="flex: 1;"
+                           maxlength="8">
+                    <canvas id="enhanced-captcha-canvas" width="200" height="60" 
+                            style="border: 2px solid var(--border-color); border-radius: 8px; cursor: pointer;"
+                            onclick="generateEnhancedCaptcha()"
+                            title="Click to refresh"></canvas>
+                </div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary);">
+                    Enhanced security verification with additional complexity
+                </div>
+            `;
+            
+            // Insert after the hidden Google reCAPTCHA group
+            const googleRecaptchaGroup = document.getElementById('google-recaptcha-group');
+            googleRecaptchaGroup.parentNode.insertBefore(enhancedCaptchaGroup, googleRecaptchaGroup.nextSibling);
+            
+            // Generate enhanced CAPTCHA
+            generateEnhancedCaptcha();
+            
+            // Update step to 3 (enhanced canvas)
+            currentStep = 3;
+            
+            // Update button text
+            const submitButton = document.querySelector('.btn-primary');
+            submitButton.textContent = 'Complete Registration';
+        }
+        
+        // Generate enhanced canvas CAPTCHA
+        function generateEnhancedCaptcha() {
+            const canvas = document.getElementById('enhanced-captcha-canvas');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Generate more complex code
+            const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+            let enhancedCode = '';
+            for (let i = 0; i < 8; i++) {
+                enhancedCode += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            
+            // Store in a global variable for validation
+            window.enhancedCaptchaCode = enhancedCode;
+            
+            // Draw gradient background
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#f8f9fa');
+            gradient.addColorStop(1, '#e9ecef');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw more noise lines
+            for (let i = 0; i < 8; i++) {
+                ctx.strokeStyle = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.3)`;
+                ctx.lineWidth = Math.random() * 2 + 1;
+                ctx.beginPath();
+                ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+                ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+                ctx.stroke();
+            }
+            
+            // Draw dots for additional noise
+            for (let i = 0; i < 50; i++) {
+                ctx.fillStyle = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.5)`;
+                ctx.beginPath();
+                ctx.arc(Math.random() * canvas.width, Math.random() * canvas.height, Math.random() * 2, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+            
+            // Draw text with more complexity
+            ctx.font = 'bold 28px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            for (let i = 0; i < enhancedCode.length; i++) {
+                const x = 30 + i * 22;
+                const y = 30 + Math.random() * 12 - 6;
+                const angle = (Math.random() - 0.5) * 0.6;
+                const color = `hsl(${Math.random() * 60 + 200}, 70%, 40%)`; // Blue-ish colors
+                
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(angle);
+                ctx.fillStyle = color;
+                ctx.fillText(enhancedCode[i], 0, 0);
+                ctx.restore();
+            }
+        }
+        
+        // Move back to step 1
+        function moveToStep1() {
+            currentStep = 1;
+            
+            // Show canvas CAPTCHA
+            document.getElementById('canvas-captcha-group').style.display = 'block';
+            
+            // Hide Google reCAPTCHA
+            document.getElementById('google-recaptcha-group').style.display = 'none';
+            
+            // Update button text
+            const submitButton = document.querySelector('.btn-primary');
+            submitButton.textContent = 'Create Account';
+            
+            // Reset both CAPTCHAs
+            generateCaptcha();
+            resetRecaptcha();
+        }
+        
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            generateCaptcha(); // Generate initial canvas CAPTCHA
+        });
+        
+        // Handle theme changes for reCAPTCHA
+        const originalToggleTheme = window.toggleTheme;
+        window.toggleTheme = function() {
+            originalToggleTheme();
+            // Reset reCAPTCHA to apply new theme
+            setTimeout(resetRecaptcha, 100);
+        };
+        
+        // Toggle password visibility
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const button = input.nextElementSibling;
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                button.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                        <line x1="1" y1="1" x2="23" y2="23"/>
+                    </svg>
+                `;
+            } else {
+                input.type = 'password';
+                button.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                `;
+            }
+        }
+        
+        // Preview photo
+        function previewPhoto(event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('photo_preview');
+            const placeholder = document.getElementById('photo_placeholder');
+            
+            if (file) {
+                // Check file size (2MB limit)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('File size must be less than 2MB');
+                    event.target.value = '';
+                    return;
+                }
+                
+                // Check file type
+                if (!file.type.match('image.*')) {
+                    alert('Please select an image file (JPG, PNG, etc.)');
+                    event.target.value = '';
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    placeholder.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+                placeholder.style.display = 'flex';
+            }
+        }
+        
+        // Handle form submission
+        document.getElementById('signup-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            const canvasCaptcha = document.getElementById('captcha').value.toUpperCase();
+            const recaptchaResponse = getRecaptchaResponse();
+            const errorDiv = document.getElementById('error-message');
+            const successDiv = document.getElementById('success-message');
+            const recaptchaError = document.getElementById('recaptcha-error');
+            
+            // Hide previous messages
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+            recaptchaError.style.display = 'none';
+            
+            // Step 1: Validate form fields and canvas CAPTCHA
+            if (currentStep === 1) {
+                // Validation
+                if (!name || !email || !password || !confirmPassword) {
+                    errorDiv.textContent = 'Please fill in all required fields.';
+                    errorDiv.style.display = 'block';
+                    return;
+                }
+                
+                if (name.trim().length < 2) {
+                    errorDiv.textContent = 'Name must be at least 2 characters long.';
+                    errorDiv.style.display = 'block';
+                    return;
+                }
+                
+                if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                    errorDiv.textContent = 'Please enter a valid email address.';
+                    errorDiv.style.display = 'block';
+                    return;
+                }
+                
+                if (password.length < 8) {
+                    errorDiv.textContent = 'Password must be at least 8 characters long.';
+                    errorDiv.style.display = 'block';
+                    return;
+                }
+                
+                if (!/[A-Z]/.test(password)) {
+                    errorDiv.textContent = 'Password must contain at least one uppercase letter.';
+                    errorDiv.style.display = 'block';
+                    return;
+                }
+                
+                if (!/[a-z]/.test(password)) {
+                    errorDiv.textContent = 'Password must contain at least one lowercase letter.';
+                    errorDiv.style.display = 'block';
+                    return;
+                }
+                
+                if (!/[0-9]/.test(password)) {
+                    errorDiv.textContent = 'Password must contain at least one number.';
+                    errorDiv.style.display = 'block';
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    errorDiv.textContent = 'Passwords do not match.';
+                    errorDiv.style.display = 'block';
+                    return;
+                }
+                
+                // Validate canvas CAPTCHA
+                if (!canvasCaptcha || canvasCaptcha !== captchaCode) {
+                    errorDiv.textContent = 'Incorrect security code. Please try again.';
+                    errorDiv.style.display = 'block';
+                    generateCaptcha();
+                    document.getElementById('captcha').value = '';
+                    return;
+                }
+                
+                // All validations passed, move to step 2
+                moveToStep2();
+                return;
+            }
+            
+            // Step 2: Validate Google reCAPTCHA and submit
+            if (currentStep === 2) {
+                // Validate Google reCAPTCHA
+                if (!recaptchaResponse) {
+                    recaptchaError.textContent = 'Please complete the security verification.';
+                    recaptchaError.style.display = 'block';
+                    return;
+                }
+                
+                // Proceed with signup
+                proceedWithSignup(recaptchaResponse);
+            }
+            
+            // Step 3: Validate enhanced canvas CAPTCHA and submit
+            if (currentStep === 3) {
+                const enhancedCaptcha = document.getElementById('enhanced-captcha');
+                const enhancedCaptchaValue = enhancedCaptcha ? enhancedCaptcha.value.toUpperCase() : '';
+                
+                if (!enhancedCaptchaValue || enhancedCaptchaValue !== window.enhancedCaptchaCode) {
+                    errorDiv.textContent = 'Incorrect enhanced security code. Please try again.';
+                    errorDiv.style.display = 'block';
+                    generateEnhancedCaptcha();
+                    if (enhancedCaptcha) enhancedCaptcha.value = '';
+                    return;
+                }
+                
+                // Proceed with signup (no Google reCAPTCHA token needed)
+                proceedWithSignup(null);
+            }
+            
+            function proceedWithSignup(recaptchaToken) {
+                // Handle profile photo (optional)
+                const photoInput = document.getElementById('profile_photo');
+                const photoPreview = document.getElementById('photo_preview');
+                let profilePhotoData = null;
+                
+                if (photoInput.files && photoInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        profilePhotoData = e.target.result;
+                        submitSignup(recaptchaToken);
+                    };
+                    reader.readAsDataURL(photoInput.files[0]);
+                } else {
+                    submitSignup(recaptchaToken);
+                }
+                
+                function submitSignup(token) {
+                    // Show loading state
+                    const submitButton = document.querySelector('.btn-primary');
+                    const originalText = submitButton.textContent;
+                    submitButton.textContent = 'Creating Account...';
+                    submitButton.disabled = true;
+                    
+                    // Prepare request body
+                    const requestBody = {
+                        name: name.trim(),
+                        email: email.trim(),
+                        password: password,
+                        profilePhoto: profilePhotoData
+                    };
+                    
+                    // Add reCAPTCHA token if available
+                    if (token) {
+                        requestBody['g-recaptcha-response'] = token;
+                    }
+                    
+                    // Send signup request to backend
+                    fetch('signup-process.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify(requestBody)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            successDiv.textContent = 'Account created successfully! Redirecting to login...';
+                            successDiv.style.display = 'block';
+                            
+                            // Redirect to login after 2 seconds
+                            setTimeout(() => {
+                                window.location.href = 'login.html';
+                            }, 2000);
+                        } else {
+                            errorDiv.textContent = data.error || 'Account creation failed. Please try again.';
+                            errorDiv.style.display = 'block';
+                            
+                            // Reset appropriate CAPTCHA based on current step
+                            if (currentStep === 2) {
+                                resetRecaptcha();
+                            } else if (currentStep === 3) {
+                                generateEnhancedCaptcha();
+                                const enhancedCaptcha = document.getElementById('enhanced-captcha');
+                                if (enhancedCaptcha) enhancedCaptcha.value = '';
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Signup error:', error);
+                        errorDiv.textContent = 'Network error. Please try again.';
+                        errorDiv.style.display = 'block';
+                        
+                        // Reset appropriate CAPTCHA based on current step
+                        if (currentStep === 2) {
+                            resetRecaptcha();
+                        } else if (currentStep === 3) {
+                            generateEnhancedCaptcha();
+                            const enhancedCaptcha = document.getElementById('enhanced-captcha');
+                            if (enhancedCaptcha) enhancedCaptcha.value = '';
+                        }
+                    })
+                    .finally(() => {
+                        // Restore button state
+                        submitButton.textContent = originalText;
+                        submitButton.disabled = false;
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

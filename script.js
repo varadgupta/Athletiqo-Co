@@ -1,12 +1,96 @@
-// Product Database
+// ===== ATHLETIQO PREMIUM JAVASCRIPT =====
+// ===== THEME SYSTEM =====
+function initializeTheme() {
+    const savedTheme = localStorage.getItem('athletiqoTheme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('athletiqoTheme', newTheme);
+    updateThemeIcon(newTheme);
+    
+    showNotification(`Switched to ${newTheme} mode`, 'success');
+}
+
+function updateThemeIcon(theme) {
+    const themeToggle = document.querySelector('.theme-toggle');
+    if (!themeToggle) return;
+    
+    const icon = themeToggle.querySelector('svg');
+    if (theme === 'dark') {
+        icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+    } else {
+        icon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
+    }
+}
+// ===== MOBILE MENU =====
+function initializeMobileMenu() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const navContainer = document.querySelector('.nav-container');
+    
+    if (mobileToggle && navContainer) {
+        mobileToggle.addEventListener('click', () => {
+            mobileToggle.classList.toggle('active');
+            navContainer.classList.toggle('active');
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!mobileToggle.contains(e.target) && !navContainer.contains(e.target)) {
+                mobileToggle.classList.remove('active');
+                navContainer.classList.remove('active');
+            }
+        });
+    }
+}
+
+// ===== ENHANCED NOTIFICATION SYSTEM =====
+function showNotification(message, type = 'info', duration = 3000) {
+    // Remove existing notifications
+    const existingNotifications = document.querySelectorAll('.notification');
+    existingNotifications.forEach(notification => notification.remove());
+    
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="font-size: 1.2rem;">
+                ${type === 'success' ? '✓' : type === 'error' ? '✕' : type === 'warning' ? '!' : 'ℹ'}
+            </div>
+            <div>${message}</div>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Auto remove after duration
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.style.animation = 'slideInRight 0.3s ease reverse';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    document.body.removeChild(notification);
+                }
+            }, 300);
+        }
+    }, duration);
+}
+
+// ===== PRODUCT DATABASE =====
 const products = [
     {
         id: 1,
         name: "Basketball BT900 - Size 7",
         category: "equipment",
         subcategory: "basketball",
-        price: 1999,
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1voFYoBEsu09Wk_ZzJ0Vjfwp8TajnE3snCg&s",
+        price: 1999.00,
+        image: "https://picsum.photos/seed/basketball/400/300.jpg",
         buyLink: "https://www.decathlon.in/p/8648080/basketball-bt900-size-7fiba-approved-for-boys-and-adults",
         keywords: ["basketball", "ball", "sports", "equipment"]
     },
@@ -15,8 +99,8 @@ const products = [
         name: "Cult Men's Running Shoes-Off White",
         category: "wear",
         subcategory: "shoes",
-        price: 2299,
-        image: "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT-73mzz_opcEj925iNhtiTrMGr2Hw6zfmhMdm38YcIfBe0yrbOJi8fMW5iw48gWyvD7e3YfCnGXpthhxWP8kMxOFAUu5IsImYiY8ViHSc1kA2jscvitd3zTw&usqp=CAc",
+        price: 2299.00,
+        image: "https://picsum.photos/seed/running-shoes/400/300.jpg",
         buyLink: "https://cultstore.com/products/cult-men-s-traverse-running-shoes-off-white",
         keywords: ["shoes", "running", "footwear", "sports", "wear"]
     },
@@ -25,8 +109,8 @@ const products = [
         name: "SS Ikon Kashmir Willow Cricket Bat",
         category: "equipment",
         subcategory: "cricket",
-        price: 2654,
-        image: "https://www.sstoncricket.com/wp-content/uploads/2023/04/56A51367-scaled-370x493.jpg",
+        price: 2654.00,
+        image: "https://picsum.photos/seed/cricket-bat/400/300.jpg",
         buyLink: "https://www.sstoncricket.com/ss-ikon-kashmir-willow-cricket-bat-sh.html",
         keywords: ["cricket", "bat", "sports", "equipment"]
     },
@@ -35,8 +119,8 @@ const products = [
         name: "Gym Weight Training Station Full Body Workout at Home",
         category: "equipment",
         subcategory: "gym",
-        price: 35999,
-        image: "https://contents.mediadecathlon.com/p2300404/5f3428e7ca71a6b8d65702dd8bffdcdc/p2300404.jpg",
+        price: 35999.00,
+        image: "https://picsum.photos/seed/gym-equipment/400/300.jpg",
         buyLink: "https://www.decathlon.in/p/8484134/gym-weight-training-station-full-body-workout-at-home-home-gym-900-black",
         keywords: ["gym", "workout", "training", "equipment", "fitness"]
     },
@@ -45,8 +129,8 @@ const products = [
         name: "Boldfit Adjustable Hand Grip",
         category: "equipment",
         subcategory: "gym",
-        price: 299,
-        image: "https://m.media-amazon.com/images/I/61eYoqYP2TL._AC_UL480_FMwebp_QL65_.jpg",
+        price: 299.00,
+        image: "https://picsum.photos/seed/hand-grip/400/300.jpg",
         buyLink: "https://amzn.in/d/04hoirIg",
         keywords: ["hand", "grip", "gym", "fitness", "equipment"]
     },
@@ -55,8 +139,8 @@ const products = [
         name: "DOMYOS - Men Gym Trackpant Convertible",
         category: "wear",
         subcategory: "trackpant",
-        price: 999,
-        image: "https://contents.mediadecathlon.com/p2273704/45979084bc75f77fb9b7c3a4efc12751/p2273704.jpg",
+        price: 999.00,
+        image: "https://picsum.photos/seed/trackpants/400/300.jpg",
         buyLink: "https://www.decathlon.in/p/8731703/men-gym-trackpant-convertible-jog-fit-quick-dry-zip-pockets-500-black",
         keywords: ["trackpant", "pants", "gym", "wear", "sports"]
     },
@@ -65,8 +149,8 @@ const products = [
         name: "Reebok Unisex Ri Vector Knit Tracktop",
         category: "wear",
         subcategory: "tracktop",
-        price: 1799,
-        image: "https://imagescdn.reebok.in/img/app/product/9/957428-12396402.jpg?auto=format&w=390",
+        price: 1799.00,
+        image: "https://picsum.photos/seed/tracktop/400/300.jpg",
         buyLink: "https://reebok.abfrl.in/p/reebok-unisex-ri-vector-knit-tracktop-957428.html?source=plp",
         keywords: ["tracktop", "jacket", "wear", "sports", "reebok"]
     },
@@ -75,8 +159,8 @@ const products = [
         name: "Men's Full Sleeve Compression T-Shirt",
         category: "wear",
         subcategory: "tshirt",
-        price: 899,
-        image: "https://m.media-amazon.com/images/I/61J2-dVzIgL._SY879_.jpg",
+        price: 899.00,
+        image: "https://picsum.photos/seed/compression-shirt/400/300.jpg",
         buyLink: "https://www.amazon.in/FUAARK-Mens-Sleeve-Compression-T-Shirt/dp/B0C5SVCGM6?ref_=ast_sto_dp&th=1&psc=1",
         keywords: ["tshirt", "shirt", "compression", "wear", "sports"]
     }
@@ -87,6 +171,8 @@ let cart = JSON.parse(localStorage.getItem('athletiqoCart')) || [];
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+    initializeTheme();
+    initializeMobileMenu();
     initializeSearch();
     initializeCart();
     updateCartCount();
@@ -430,13 +516,127 @@ function showNotification(message) {
     }, 3000);
 }
 
-function proceedToCheckout() {
+function clearCart() {
     if (cart.length === 0) {
-        showNotification('Your cart is empty!');
+        showNotification('Your cart is already empty!', 'warning');
         return;
     }
     
-    showNotification('Redirecting to checkout...');
+    if (confirm('Are you sure you want to clear your entire cart?')) {
+        cart = [];
+        saveCart();
+        updateCartCount();
+        updateCartDisplay();
+        showNotification('Cart cleared successfully', 'success');
+    }
+}
+
+function updateCartDisplay() {
+    const cartContent = document.getElementById('cart-content');
+    if (!cartContent) return;
+    
+    if (cart.length === 0) {
+        cartContent.innerHTML = `
+            <div class="cart-empty">
+                <div style="text-align: center; padding: 60px 20px; background: var(--bg-card); border-radius: 16px; box-shadow: 0 8px 32px var(--shadow-light); border: 1px solid var(--border-color);">
+                    <div style="font-size: 4rem; margin-bottom: 2rem;">🛒</div>
+                    <h3 style="color: var(--text-primary); margin-bottom: 1rem; font-size: 1.5rem;">Your cart is empty</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 1.1rem;">Start shopping to add items to your cart!</p>
+                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                        <a href="wear.html" class="btn btn-primary">
+                            Browse Sports Wear
+                        </a>
+                        <a href="equipment.html" class="btn btn-secondary">
+                            Browse Equipment
+                        </a>
+                    </div>
+                </div>
+            </div>
+        `;
+        return;
+    }
+    
+    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    
+    cartContent.innerHTML = `
+        <div class="cart-items">
+            <h3 style="margin-bottom: 2rem; color: var(--text-primary); font-size: 1.3rem;">Cart Items (${cart.length})</h3>
+            <div style="display: grid; gap: 1.5rem;">
+                ${cart.map((item, index) => `
+                    <div style="display: flex; gap: 1.5rem; align-items: center; padding: 1.5rem; background: var(--bg-card); border-radius: 12px; box-shadow: 0 4px 16px var(--shadow-light); border: 1px solid var(--border-color);">
+                        <img src="${item.image}" alt="${item.name}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
+                        <div style="flex: 1;">
+                            <h4 style="margin: 0 0 0.5rem 0; color: var(--text-primary); font-size: 1.1rem;">${item.name}</h4>
+                            <p style="margin: 0 0 1rem 0; color: var(--accent-primary); font-weight: bold; font-size: 1.1rem;">₹${item.price.toLocaleString('en-IN')}</p>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border-radius: 8px; padding: 0.25rem;">
+                                    <button onclick="updateQuantity(${index}, -1)" style="background: none; border: none; color: var(--text-primary); cursor: pointer; padding: 0.5rem; border-radius: 4px; font-size: 1.2rem;">−</button>
+                                    <span style="min-width: 2rem; text-align: center; font-weight: 600;">${item.quantity}</span>
+                                    <button onclick="updateQuantity(${index}, 1)" style="background: none; border: none; color: var(--text-primary); cursor: pointer; padding: 0.5rem; border-radius: 4px; font-size: 1.2rem;">+</button>
+                                </div>
+                                <button onclick="removeFromCart(${item.id})" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Remove</button>
+                                <a href="${item.buyLink}" target="_blank" class="btn btn-success" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Buy Now</a>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+        
+        <div class="cart-summary" style="margin-top: 40px; background: var(--bg-card); padding: 2rem; border-radius: 16px; box-shadow: 0 8px 32px var(--shadow-light); border: 1px solid var(--border-color);">
+            <h3 style="margin-bottom: 1.5rem; color: var(--text-primary); font-size: 1.3rem;">Cart Summary</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--border-color);">
+                <span style="color: var(--text-secondary);">Subtotal:</span>
+                <span style="font-weight: bold; color: var(--accent-primary); font-size: 1.1rem;">₹${total.toLocaleString('en-IN')}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--border-color);">
+                <span style="color: var(--text-secondary);">Shipping:</span>
+                <span style="color: var(--text-secondary);">Calculated at checkout</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; font-size: 1.2rem; font-weight: bold; border-top: 2px solid var(--border-color); margin-top: 1rem;">
+                <span>Total:</span>
+                <span style="color: var(--accent-primary);">₹${total.toLocaleString('en-IN')}</span>
+            </div>
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <button onclick="clearCart()" class="btn btn-outline" style="flex: 1;">
+                    Clear Cart
+                </button>
+                <button onclick="proceedToCheckout()" class="btn btn-success" style="flex: 2;">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+function updateQuantity(index, change) {
+    const item = cart[index];
+    const newQuantity = item.quantity + change;
+    
+    if (newQuantity < 1) {
+        removeFromCart(item.id);
+        return;
+    }
+    
+    if (newQuantity > 10) {
+        showNotification('Maximum quantity is 10 items per product', 'warning');
+        return;
+    }
+    
+    item.quantity = newQuantity;
+    saveCart();
+    updateCartCount();
+    updateCartDisplay();
+    showNotification('Cart updated', 'success');
+}
+
+function proceedToCheckout() {
+    if (cart.length === 0) {
+        showNotification('Your cart is empty!', 'warning');
+        return;
+    }
+    
+    showNotification('Redirecting to checkout...', 'info');
     // In a real application, this would redirect to a checkout page
     setTimeout(() => {
         alert('Checkout functionality would be implemented here. For now, please use the "Buy Now" buttons on individual products.');
